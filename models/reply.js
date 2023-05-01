@@ -13,4 +13,5 @@ const replySchema = new Schema({
 		ref: "User",
 	},
 });
+console.log("ok")
 module.exports = mongoose.model("Reply", replySchema);
