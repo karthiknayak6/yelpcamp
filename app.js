@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== "production") {
-	require("dotenv").config();
+  require("dotenv").config();
 }
 
 const express = require("express");
@@ -27,9 +27,9 @@ const app = express();
 
 // Or, to replace these prohibited characters with _, use:
 app.use(
-	mongoSanitize({
-		replaceWith: "_",
-	})
+  mongoSanitize({
+    replaceWith: "_",
+  }),
 );
 const { nextTick } = require("process");
 app.use(methodOverride("_method"));
@@ -37,18 +37,17 @@ app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 const User = require("./models/user");
-
 const sessionConfig = {
-	name: "session",
-	secret: "thisshouldbeabettersecret",
-	resave: false,
-	saveUninitialized: true,
-	cookie: {
-		httpOnly: true,
-		// secure: true,
-		expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-		maxAge: 1000 * 60 * 60 * 24 * 7,
-	},
+  name: "session",
+  secret: "thisshouldbeabettersecret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    // secure: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
 };
 app.use(session(sessionConfig));
 app.use(flash());
@@ -101,12 +100,12 @@ app.use(passport.session());
 // );
 
 app.use((req, res, next) => {
-	console.log(req.query);
-	console.log(req.user);
-	res.locals.currentUser = req.user;
-	res.locals.success = req.flash("success");
-	res.locals.error = req.flash("error");
-	next();
+  console.log(req.query);
+  console.log(req.user);
+  res.locals.currentUser = req.user;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
 });
 
 //Routes declaration
@@ -125,35 +124,35 @@ app.engine("ejs", ejsMate);
 const dbUrl = process.env.DB_URL;
 
 mongoose.connect("mongodb://localhost:27017/yelpcamp", {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-	console.log("Database connected");
+  console.log("Database connected");
 });
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res) => {
-	res.render("home");
+  res.render("home");
 });
 
 app.all("*", (req, res, next) => {
-	next(new ExpressError("Page Not Found", 404));
+  next(new ExpressError("Page Not Found", 404));
 });
 app.use((err, req, res, next) => {
-	const { statusCode = 500 } = err;
-	if (!err.message) err.message = "Oh No!! Something went wrong";
-	res.status(statusCode);
-	res.render("error", { err });
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = "Oh No!! Something went wrong";
+  res.status(statusCode);
+  res.render("error", { err });
 
-	next();
+  next();
 });
 
 app.listen(3001, () => {
-	console.log("RUNNING ON PORT 3001");
+  console.log("RUNNING ON PORT 3001");
 });

@@ -14,7 +14,7 @@ module.exports.isLoggedIn = (req, res, next) => {
 
 	next();
 };
-
+console.log("hey")
 module.exports.isAuthor = async (req, res, next) => {
 	const { id } = req.params;
 	const campground = await Campground.findById(id);
